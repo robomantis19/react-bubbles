@@ -12,6 +12,7 @@ const ColorList = ({ colors, updateColors }) => {
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
   
+  const [add1, setAdd1] = useState(initialColor); 
   const editColor = color => {
     setEditing(true);
     setColorToEdit(color);
@@ -42,6 +43,22 @@ const ColorList = ({ colors, updateColors }) => {
     })
     updateColors(true);
   };
+
+  const handleSubmit = e => { 
+    axiosWithAuth()
+    .post(`colors`, add1 )
+    .then(res => { 
+      console.log('add color response', res)
+    }).catch(err => {
+      console.log('add color error', err); 
+    })
+    updateColors(true)
+  }
+
+  const handleChange1 = e => { 
+    e.preventDefault();
+    setAdd1({...add1, [e.target.name]: e.target.value});
+  }
 
   return (
     <div className="colors-wrap">
@@ -98,9 +115,30 @@ const ColorList = ({ colors, updateColors }) => {
           </div>
         </form>
       )}
+      
+      
+      <form onSubmit={handleSubmit} style={{backgroundColor: `#00b159`, width:`250px`, height: `200px`, display: `flex`, flexDirection: `column`, justifyContent: `space-between` ,alignItems: `center`, paddingBottom: `50px`}}>
+        <h2>Add Color</h2>
+        <input 
+        type="text"
+        value={add1.color}
+        name="color"
+        placeholder="color name"
+        onChange={handleChange1}
+        />
+        <input 
+        type="text"
+        value={add1.code.hex}
+        name="code"
+        placeholder="hex code"
+        onChange={handleChange1}
+        />
+        <button style={{backgroundColor:'#4be58f'}}>Add color</button>
+      </form>
       <div className="spacer" />
-      {/* stretch - build another form here to add a color */}
     </div>
+
+    
   );
 };
 

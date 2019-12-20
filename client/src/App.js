@@ -3,7 +3,7 @@ import { BrowserRouter as Router,  Link, Route, Switch } from "react-router-dom"
 import BubblePage from './components/BubblePage'; 
 import Login from "./components/Login";
 import "./styles.scss";
-
+import PrivateRoute from './components/PrivateRoute'; 
 function App() {
   return (
     <Router>
@@ -14,8 +14,9 @@ function App() {
           <Link to="/BubblePage">Home</Link>
         </div>
         <Switch>
+          <PrivateRoute exact path="/BubblePage" component={BubblePage}/>
           <Route path='/login' component={Login}/>
-          <Route exact path="/BubblePage" component={BubblePage}/>
+          <Route component={Login}/>
         </Switch>
       </div>
     </Router>
